@@ -30,14 +30,13 @@ jobs:
         run: |
           OUTDATED=$(npm outdated || true)
           if [ -z "$OUTDATED" ]; then
-            echo "message=✅ All dependencies are up-to-date!" >> $GITHUB_OUTPUT
+            echo "✅ All dependencies are up-to-date!" > dependency-report.txt
           else
-            ESCAPED=$(echo "$OUTDATED" | sed ':a;N;$!ba;s/\n/\\n/g')
-            echo "message=## 📦 Dependency Report\n\`\`\`\n$ESCAPED\n\`\`\`" >> $GITHUB_OUTPUT
+            echo -e "## 📦 Dependency Report\n\`\`\`\n$OUTDATED\n\`\`\`" > dependency-report.txt
           fi
 
       - name: Comment on PR with results
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: dependency-report
-          message: ${{ steps.outdated.outputs.message }}
+          path: dependency-report.txt
