@@ -1,23 +1,13 @@
-# Nuxt Minimal Starter
+# Flesh & Blood Card Search Tool
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern, responsive web application for searching Flesh & Blood trading cards using the official @flesh-and-blood/cards API and fuzzy search with Fuse.js.
 
 ## Setup
 
 Make sure to install dependencies:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
 ## Development Server
@@ -25,17 +15,30 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
+```
 
-# pnpm
-pnpm dev
+## How to Use
 
-# yarn
-yarn dev
 
-# bun
-bun run dev
+## Project Structure
+
+```
+app/
+├── components/          # Vue components
+│   └── cardDetails.vue # Card information display
+├── middleware/          # Services and utilities
+│   └── services/
+│       └── cardSearchService.ts # Fuse.js search implementation
+├── pages/               # Application pages
+│   └── index.vue        # Main search page
+├── stores/              # Pinia stores
+│   ├── cardStore.ts     # Card data management
+│   └── themeStore.ts    # Dark mode state
+├── types/               # TypeScript definitions
+│   ├── card.ts          # Card interface
+│   └── pitch.ts         # Pitch enum
+└── app.vue              # Root component with theme toggle
 ```
 
 ## Production
@@ -43,33 +46,11 @@ bun run dev
 Build the application for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

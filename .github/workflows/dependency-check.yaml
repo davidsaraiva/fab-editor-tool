@@ -1,0 +1,42 @@
+name: Check Dependencies
+
+permissions:
+  pull-requests: write
+  issues: write
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-deps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 23
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check for outdated dependencies
+        id: outdated
+        run: |
+          OUTDATED=$(npm outdated || true)
+          if [ -z "$OUTDATED" ]; then
+            echo "✅ All dependencies are up-to-date!" > dependency-report.txt
+          else
+            echo -e "## 📦 Dependency Report\n\`\`\`\n$OUTDATED\n\`\`\`" > dependency-report.txt
+          fi
+
+      - name: Comment on PR with results
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: dependency-report
+          path: dependency-report.txt
