@@ -1,13 +1,11 @@
-// utils/searchService.ts
 import Fuse, { type IFuseOptions } from 'fuse.js'
 import type { Card } from "~/types/card"
 
 class CardSearchService {
-    private readonly fuse: Fuse<Card>
+    private fuse: Fuse<Card>
     private cards: Card[] = []
 
     constructor() {
-        console.log("Calling constructor")
         const fuseOptions: IFuseOptions<Card> = {
             keys: [
                 {
@@ -16,7 +14,7 @@ class CardSearchService {
                 },
                 {
                     name: 'pitch',
-                    weight: 0.3 // Lower weight for cost matches
+                    weight: 0.3 // Lower weight for pitch matches
                 }
             ],
             threshold: 0.3, // Lower = more strict matching (0.0 = exact, 1.0 = very loose)
@@ -29,8 +27,8 @@ class CardSearchService {
      * Update the search index with new cards data
      */
     public updateCards(cards: Card[]): void {
-        if (this.cards.length != cards.length) {
-            console.log("Updating cards in search service")
+        if (this.cards.length !== cards.length) {
+            console.log(`Updating search index with ${cards.length} cards`)
             this.cards = cards
             this.fuse.setCollection(cards)
         }

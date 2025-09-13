@@ -6,27 +6,28 @@ import { Pitch } from "~/types/pitch";
 import { cardSearchService } from "~/middleware/services/cardSearchService";
 
 export const useCardStore = defineStore('cardStore', {
-    state: (): { cardList: Card[], isLoaded: boolean } => ({
-        cardList: [],
-        isLoaded: false  // ADD THIS LINE
+    state: () => ({
+        cardList: [] as Card[],
+        isLoaded: false
     }),
 
     actions: {
-        // TODO: This is being called every time page is refreshed
         async loadCardList() {
+            // Prevent duplicate loading
             if (this.isLoaded) {
                 console.log("Cards already loaded")
-                return // Prevent duplicate loading
+                return
             }
 
             try {
                 console.info('Loading card list...')
                 this.cardList = mapToLocal(cards as FabCard[])
                 cardSearchService.updateCards(this.cardList)
+                this.isLoaded = true
+                console.log(`Loaded ${this.cardList.length} cards`)
             } catch (error) {
-                console.error(error)
+                console.error('Failed to load cards:', error)
             }
-            this.isLoaded = true // ADD THIS LINE
         },
 
         search(query: string, pageSize: number = 10): Card[] {
@@ -34,9 +35,7 @@ export const useCardStore = defineStore('cardStore', {
                 console.warn('Cards not loaded yet!')
                 return []
             }
-            console.log('search store', query, pageSize)
-            // TODO: debounce this?
-            // TODO: cardList is not supposed to be provided here, investigate
+            
             return cardSearchService.search(this.cardList, query, pageSize)
         }
     }
@@ -52,8 +51,10 @@ function mapToLocal(cards: FabCard[]): Card[] {
 }
 
 function convertPitch(pitch: number | undefined): Pitch {
-    if (pitch === 1) return Pitch.Red
-    if (pitch === 2) return Pitch.Yellow
-    if (pitch === 3) return Pitch.Blue
-    return Pitch.None
+    switch (pitch) {
+        case 1: return Pitch.Red
+        case 2: return Pitch.Yellow
+        case 3: return Pitch.Blue
+        default: return Pitch.None
+    }
 }
