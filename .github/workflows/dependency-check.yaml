@@ -28,7 +28,8 @@ jobs:
           if [ -z "$OUTDATED" ]; then
             echo "message=✅ All dependencies are up-to-date!" >> $GITHUB_OUTPUT
           else
-            echo "message=## 📦 Dependency Report\n\`\`\`\n$OUTDATED\n\`\`\`" >> $GITHUB_OUTPUT
+            ESCAPED=$(echo "$OUTDATED" | sed ':a;N;$!ba;s/\n/\\n/g')
+            echo "message=## 📦 Dependency Report\n\`\`\`\n$ESCAPED\n\`\`\`" >> $GITHUB_OUTPUT
           fi
 
       - name: Comment on PR with results
