@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@flesh-and-blood/cards": "^3.6.128",
+    "@flesh-and-blood/cards": "^3.6.140",
     "@pinia/nuxt": "^0.11.2",
     "nuxt": "^4.1.1",
     "fuse.js": "^7.1.0",
